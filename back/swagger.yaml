@@ -138,7 +138,7 @@ paths:
         '500':
           description: Internal Server Error
     
-  /user/account:
+  /user/{accountId}:
     get:
       security:
         - Bearer: []
@@ -147,17 +147,17 @@ paths:
       summary: get specific user's account
       description: API for fetching a specific account
       parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: string
+          required: true
+          description: accountId of the user
         - in: header
           type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
-        - in: body
-          name: body
-          description: accountId Payload
-          required: true
-          schema:
-            $ref: '#/definitions/AccountId'
       produces:
         - application/json
       responses:
@@ -171,7 +171,7 @@ paths:
           description: Account not found
         '500':
           description: Internal Server Error
-  /user/account/transaction:
+  /user/account/{transactionI}:
     get:
       security:
         - Bearer: []
@@ -180,17 +180,17 @@ paths:
       summary: get Account Transaction API
       description: API to fetch transaction's informations
       parameters:
+        - in: path
+          name: transaction Id
+          schema:
+            type: string
+          required: true
+          description: transaction Id of the account
         - in: header
           type: string
           name: Authorization
           description: Attach Bearer JWT token
           required: true
-        - in: body
-          name: body
-          description: transactionId Payload
-          required: true
-          schema:
-            $ref: '#/definitions/TransactionId'
       produces:
         - application/json
       responses:
@@ -212,6 +212,12 @@ paths:
       summary: User Account Transaction API
       description: API to modify transaction's informations
       parameters:
+        - in: path
+          name: transaction Id
+          schema:
+            type: string
+          required: true
+          description: transaction Id of the account
         - in: header
           type: string
           name: Authorization
@@ -242,36 +248,7 @@ paths:
           description: Transaction not found
         '500':
           description: Internal Server Error
-    delete:
-      security:
-        - Bearer: []
-      tags:
-        - Account Module
-      summary: User Account Transaction API
-      description: API to delete transaction's informations
-      parameters:
-        - in: header
-          type: string
-          name: Authorization
-          description: Attach Bearer JWT token
-          required: true
-        - in: body
-          name: body
-          description: transactionId Payload
-          required: true
-          schema:
-            $ref: '#/definitions/TransactionId'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Informations deleted successfully
-        '401':
-          description: User not authorized
-        '404':
-          description: Transaction not found
-        '500':
-          description: Internal Server Error
+
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -340,12 +317,7 @@ definitions:
         amount:
           type: number
           description: amount on the account
-  AccountId:
-    type: object
-    properties:
-      id:
-        type: string
-        description: unique account id
+
   AccountDetails:
     type: object
     properties:
@@ -364,12 +336,7 @@ definitions:
             amount:
               type: number
               description: amount of the transaction
-  TransactionId: 
-    type: object 
-    properties:
-      id: 
-        type: string
-        description: unique transaction id
+
   TransactionDetails:
     type: object
     properties:

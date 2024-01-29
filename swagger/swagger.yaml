@@ -171,7 +171,7 @@ paths:
           description: Account not found
         '500':
           description: Internal Server Error
-  /user/account/{transactionI}:
+  /user/account/{transactionID}:
     get:
       security:
         - Bearer: []
@@ -199,6 +199,8 @@ paths:
           schema:
             $ref: '#/definitions/TransactionDetails'
         '401':
+          description: User not authenticated
+        '403':
           description: User not authorized
         '404':
           description: Transaction not found
@@ -225,16 +227,10 @@ paths:
           required: true
         - in: body
           name: body
-          description: transactionId Payload
-          required: true
-          schema:
-            $ref: '#/definitions/TransactionId'
-        - in: body
-          name: body
           description: informations Payload
           required: true
           schema:
-            $ref: '#/definitions/Informations'
+            $ref: '#/definitions/InformationsEdit'
       produces:
         - application/json
       responses:
@@ -243,6 +239,8 @@ paths:
           schema:
             $ref: '#/definitions/Informations'
         '401':
+          description: User not authenticated
+        '403':
           description: User not authorized
         '404':
           description: Transaction not found
@@ -364,3 +362,13 @@ definitions:
       notes:
         type: string
         description: transactions' notes
+  InformationsEdit:
+    type: object
+    properties:
+      category:
+        type: string
+        description: transaction's category
+      notes:
+        type: string
+        description: transactions' notes
+

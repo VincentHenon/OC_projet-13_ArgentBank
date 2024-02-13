@@ -118,7 +118,7 @@ paths:
         - Bearer: []
       tags:
         - User Module
-      summary: get user's accounts preview
+      summary: get all user's accounts
       description: API for fetching the list of the user's accounts
       parameters:
         - in: header
@@ -138,19 +138,18 @@ paths:
         '500':
           description: Internal Server Error
     
-  /user/{accountId}:
+  /user/account/{accountId}/transactions/:
     get:
       security:
         - Bearer: []
       tags:
         - Account Module
-      summary: get specific user's account
-      description: API for fetching a specific account
+      summary: get all transactions for an account
+      description: API for fetching all transactions within an array
       parameters:
         - in: path
           name: accountId
-          schema:
-            type: string
+          type: string
           required: true
           description: accountId of the user
         - in: header
@@ -162,7 +161,7 @@ paths:
         - application/json
       responses:
         '200':
-          description: User's accounts retrieved successfully
+          description: Transactions retrieved successfully
           schema:
             $ref: '#/definitions/AccountDetails'
         '401':
@@ -171,19 +170,23 @@ paths:
           description: Account not found
         '500':
           description: Internal Server Error
-  /user/account/{transactionID}:
+  /user/account/{accountId}/transaction/{transactionId}:
     get:
       security:
         - Bearer: []
       tags:
         - Account Module
-      summary: get Account Transaction API
-      description: API to fetch transaction's informations
+      summary: get informations for a specific transaction
+      description: API for fetching informations for a transaction
       parameters:
         - in: path
-          name: transaction Id
-          schema:
-            type: string
+          name: accountId
+          type: string
+          required: true
+          description: accountId of the user
+        - in: path
+          name: transactionId
+          type: string
           required: true
           description: transaction Id of the account
         - in: header
@@ -211,13 +214,17 @@ paths:
         - Bearer: []
       tags:
         - Account Module
-      summary: User Account Transaction API
-      description: API to modify transaction's informations
+      summary: modify informations for a specific transaction
+      description: API for modifying informations for a transaction
       parameters:
         - in: path
-          name: transaction Id
-          schema:
-            type: string
+          name: accountId
+          type: string
+          required: true
+          description: accountId of the user
+        - in: path
+          name: transactionId
+          type: string
           required: true
           description: transaction Id of the account
         - in: header
@@ -371,4 +378,3 @@ definitions:
       notes:
         type: string
         description: transactions' notes
-
